@@ -1,10 +1,10 @@
-import ReactPrismjs from '@uiw/react-prismjs';
-import 'prismjs/components/prism-python';
-import 'prismjs/components/prism-javascript';
-import 'prismjs/components/prism-typescript';
-import 'prismjs/components/prism-jsx';
-import 'prismjs/components/prism-tsx';
-import 'prismjs/themes/prism.css';
+import ReactPrismjs from '@/ai-artifacts/node_modules/@uiw/react-prismjs';
+import '@/ai-artifacts/node_modules/prismjs/components/prism-python';
+import '@/ai-artifacts/node_modules/prismjs/components/prism-javascript';
+import '@/ai-artifacts/node_modules/prismjs/components/prism-typescript';
+import '@/ai-artifacts/node_modules/prismjs/components/prism-jsx';
+import '@/ai-artifacts/node_modules/prismjs/components/prism-tsx';
+import '@/ai-artifacts/node_modules/prismjs/themes/prism.css';
 // import "prismjs/plugins/line-numbers/prism-line-numbers.js";
 // import "prismjs/plugins/line-numbers/prism-line-numbers.css";
 
