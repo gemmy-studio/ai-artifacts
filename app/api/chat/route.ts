@@ -1,41 +1,53 @@
-import {
-  streamObject,
-  LanguageModel,
-  CoreMessage,
-} from 'ai'
+import { streamObject, LanguageModel, CoreMessage } from 'ai';
 
-import ratelimit from '@/lib/ratelimit'
-import { Templates, templatesToPrompt } from '@/lib/templates'
-import { getModelClient, getDefaultMode } from '@/lib/models'
-import { LLMModel, LLMModelConfig } from '@/lib/models'
-import { artifactSchema as schema } from '@/lib/schema'
+import ratelimit from '@/ai-artifacts/lib/ratelimit';
+import { Templates, templatesToPrompt } from '@/ai-artifacts/lib/templates';
+import { getModelClient, getDefaultMode } from '@/ai-artifacts/lib/models';
+import { LLMModel, LLMModelConfig } from '@/ai-artifacts/lib/models';
+import { artifactSchema as schema } from '@/ai-artifacts/lib/schema';
 
-export const maxDuration = 60
+export const maxDuration = 60;
 
-const rateLimitMaxRequests = 5
-const ratelimitWindow = '1m'
+const rateLimitMaxRequests = 5;
+const ratelimitWindow = '1m';
 
 export async function POST(req: Request) {
-  const limit = await ratelimit(req, rateLimitMaxRequests, ratelimitWindow)
+  const limit = await ratelimit(req, rateLimitMaxRequests, ratelimitWindow);
   if (limit) {
     return new Response('You have reached your request limit for the day.', {
       status: 429,
       headers: {
         'X-RateLimit-Limit': limit.amount.toString(),
         'X-RateLimit-Remaining': limit.remaining.toString(),
-        'X-RateLimit-Reset': limit.reset.toString()
-      }
-    })
+        'X-RateLimit-Reset': limit.reset.toString(),
+      },
+    });
   }
 
-  const { messages, userID, template, model, config }: { messages: CoreMessage[], userID: string, template: Templates, model: LLMModel, config: LLMModelConfig } = await req.json()
-  console.log('userID', userID)
+  const {
+    messages,
+    userID,
+    template,
+    model,
+    config,
+  }: {
+    messages: CoreMessage[];
+    userID: string;
+    template: Templates;
+    model: LLMModel;
+    config: LLMModelConfig;
+  } = await req.json();
+  console.log('userID', userID);
   // console.log('template', template)
-  console.log('model', model)
-  console.log('config', config)
+  console.log('model', model);
+  console.log('config', config);
 
-  const { model: modelNameString, apiKey: modelApiKey, ...modelParams } = config
-  const modelClient = getModelClient(model, config)
+  const {
+    model: modelNameString,
+    apiKey: modelApiKey,
+    ...modelParams
+  } = config;
+  const modelClient = getModelClient(model, config);
 
   const stream = await streamObject({
     model: modelClient as LanguageModel,
@@ -44,7 +56,7 @@ export async function POST(req: Request) {
     messages,
     mode: getDefaultMode(model),
     ...modelParams,
-  })
+  });
 
-  return stream.toTextStreamResponse()
+  return stream.toTextStreamResponse();
 }

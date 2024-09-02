@@ -1,25 +1,25 @@
-import { CodeInterpreter } from '@e2b/code-interpreter'
-import {
-  useEffect,
-  useState,
-} from 'react'
+import { CodeInterpreter } from '@/ai-artifacts/node_modules/@e2b/code-interpreter';
+import { useEffect, useState } from 'react';
 
 function useSandbox(sandboxID: string) {
-  const [sandbox, setSandbox] = useState<CodeInterpreter>()
-  const [error, setError] = useState<Error>()
+  const [sandbox, setSandbox] = useState<CodeInterpreter>();
+  const [error, setError] = useState<Error>();
 
-  useEffect(function connectToSandbox() {
-    (async () => {
-      try {
-        const sandbox = await CodeInterpreter.connect(sandboxID)
-        setSandbox(sandbox)
-      } catch (error) {
-        setError(error as Error)
-      }
-    })()
-  }, [sandboxID])
+  useEffect(
+    function connectToSandbox() {
+      (async () => {
+        try {
+          const sandbox = await CodeInterpreter.connect(sandboxID);
+          setSandbox(sandbox);
+        } catch (error) {
+          setError(error as Error);
+        }
+      })();
+    },
+    [sandboxID],
+  );
 
-  return { sandbox, error }
+  return { sandbox, error };
 }
 
-export default useSandbox
+export default useSandbox;

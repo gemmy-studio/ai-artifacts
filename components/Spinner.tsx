@@ -1,7 +1,7 @@
 function Spinner() {
   return (
     <svg
-      className="h-3 w-3 animate-spin"
+      className="h-3 w-3 animate-spin mr-2"
       fill="none"
       viewBox="0 0 24 24"
       xmlns="http://www.w3.org/2000/svg"
@@ -20,7 +20,7 @@ function Spinner() {
         fill="currentColor"
       ></path>
     </svg>
-  )
+  );
 }
 
-export default Spinner
+export default Spinner;
